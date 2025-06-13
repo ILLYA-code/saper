@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leader Board</title>
+    <link rel="stylesheet" href="./board.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    
+    <header>
+        <div class="header-cutter">
+            <a class="back-btn" href="./index.html">⇐ game</a>
+            <div class="title">Leader Board</div>
+
+            <select id="size-menu" name="menu">
+                <option value="10">10 X 10</option>
+                <option value="17">17 X 17</option>
+                <option value="24">24 X 24</option>
+            </select>
+            <select id="complexity-menu" name="complexity-menu">
+                <option value="easy">easy</option>
+                <option value="normal" selected>normal</option>
+                <option value="hard">hard</option>
+            </select>
+        </div>
+    </header>
+    <div class="board-box">
+        <div class="no-scores-box" id="no-scores-box">
+            <div class="no-scores">THERE ARE NO SCORES FOR THIS MODE</div>
+            <div class="no-scores">BECOME THE FIRST ONE!</div>
+        </div>
+        <div class="scores-table" id="scores-table">
+            
+        </div>
+    </div>
+
+    <script type="module">
+        import { getScoresFromFirestore } from './firebase-config.js';
+
+        let sizeMenuElement = document.getElementById('size-menu');
+        let complexityMenyElement = document.getElementById('complexity-menu');
+        let noScoresBox = document.getElementById('no-scores-box');
+
+        let scoresFromFirestoreResponse = await getScoresFromFirestore() || 'none';
+        let scores = false;
+        
+        if (scoresFromFirestoreResponse !== 'none' && scoresFromFirestoreResponse.success) {
+            scores = scoresFromFirestoreResponse.scores;
+        } else {
+            console.log('cannot show scores (');
+        }
+
+        let scoresTable = document.getElementById('scores-table');
+
+        let currentSize = 10;
+        let currentMode = 'normal';
+
+        let currentModeFirstPart = 'easy';
+        let currentModeSecondPart = '10';
+        let currentModeFullName = currentModeFirstPart + currentModeSecondPart;
+
+        let nameAndScoreMap = new Map();
+        let entriesArray = [];
+        
+        const getTimeBySeconds = (sec) => {
+            let localMinutes = Math.floor(sec / 60) % 60;
+            let localSeconds = sec % 60;
+            if (localMinutes < 10) {
+                localMinutes = `0${localMinutes}`;
+            }
+            if (localSeconds < 10) {
+                localSeconds = `0${localSeconds}`;
+            }
+            if (sec >= 3600) {
+                let localHours = Math.floor(sec / 3600);
+                return `${localHours}:${localMinutes}:${localSeconds}`;
+            } else {
+                return `${localMinutes}:${localSeconds}`;
+            }
+        }
+
+        const resortList = (size, mode) => {
+            nameAndScoreMap.clear();
+            entriesArray = [];
+
+            currentModeFullName = mode + size;
+
+            if (scores) {
+                scores.forEach((el) => {
+                    if (el.mode === currentModeFullName) {
+                        nameAndScoreMap.set(el.playerName, el.time);
+                    }
+                });
+            }
+
+            entriesArray = [...nameAndScoreMap.entries()];
+            entriesArray.sort((a, b) => a[1] - b[1]);
+
+            scoresTable.innerHTML = ''
+
+            for(let i = 0; i < 20; i++) {
+                if (i >= entriesArray.length) {
+                    break;
+                }
+
+                let placeElement = document.createElement('div');
+                placeElement.classList.add('place');
+                placeElement.innerText = i + 1;
+
+                let nameElement = document.createElement('div');
+                nameElement.classList.add('name');
+                nameElement.innerText = entriesArray[i][0];
+
+                let timeElement = document.createElement('div');
+                timeElement.classList.add('time');
+                timeElement.innerText = getTimeBySeconds(entriesArray[i][1]);
+                
+                if (i === 0) {
+                    placeElement.style.background = 'gold';
+                    nameElement.style.background = 'gold';
+                    timeElement.style.background = 'gold';
+                } else if (i === 1) {
+                    placeElement.style.background = 'silver';
+                    nameElement.style.background = 'silver';
+                    timeElement.style.background = 'silver';
+                } else if (i === 2) {
+                    placeElement.style.background = 'rgb(255, 186, 108)';
+                    nameElement.style.background = 'rgb(255, 186, 108)';
+                    timeElement.style.background = 'rgb(255, 186, 108)';
+                }
+                
+                scoresTable.appendChild(placeElement);
+                scoresTable.appendChild(nameElement);
+                scoresTable.appendChild(timeElement);
+            }
+
+            if (entriesArray[0]) {
+                noScoresBox.style.display = 'none';
+            } else {
+                noScoresBox.style.display = 'block';
+            }
+        }
+
+        sizeMenuElement.addEventListener('change', (ev) => {
+            let val = ev.target.value * 1;
+            currentSize = val;
+            resortList(currentSize, currentMode);
+        });
+
+        complexityMenyElement.addEventListener('change', (ev) => {
+            currentMode = ev.target.value;
+            resortList(currentSize, currentMode);
+        });
+    </script>
+</body>
+</html>

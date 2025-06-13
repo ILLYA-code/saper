@@ -1,3 +1,5 @@
+import { addData, getScoresFromFirestore } from './firebase-config.js';
+
 let field = document.querySelector('#field');
 let sizeMenuElement = document.getElementById('size-menu');
 let complexityMenyElement = document.getElementById('complexity-menu');
@@ -15,6 +17,22 @@ let minutes = 0;
 
 let cellsOpened = 0;
 let isVictory = false;
+
+let playerName = localStorage.getItem("playerName");
+
+function generatePlayerId() {
+    let id = '';
+    for (let i = 0; i < 10; i++) {
+        id += Math.floor(Math.random() * 10);
+    }
+    return id;
+}
+
+let playerID = localStorage.getItem("playerID");
+if (!playerID) {
+    playerID = generatePlayerId();
+    localStorage.setItem("playerID", playerID);
+}
 
 let currentMode = 'normal10';
 const updateCurrentMode = (n) => currentMode = n;
@@ -202,6 +220,9 @@ const gameOver = () => {
     }, 30 + bombsArray.length * 30);
 }
 
+let scoresFromFirestoreResponse = await getScoresFromFirestore() || null;
+let nicknamesArray = [];
+
 const checkForVictory = () => {
     if ((amount * amount) - bombsArray.length === cellsOpened) {
         isVictory = true;
@@ -212,6 +233,38 @@ const checkForVictory = () => {
         if (lastBest === 'none' || lastBest * 1 > seconds) {
             localStorageKeysValuesMap.set(currentMode, seconds);
             localStorage.setItem(currentMode, seconds);
+
+            const getPlayerName = (text) => {
+                let newNickname = prompt(text);
+                
+                if (nicknamesArray.includes(newNickname)) {
+                    getPlayerName('this nickname already exist, try to create some unique');
+                }
+
+                return newNickname;
+            }
+
+            if (!playerName) {
+                playerName = prompt("create a unique nickname");
+                if (scoresFromFirestoreResponse) {
+                    scoresFromFirestoreResponse.scores.forEach((el) => {
+                        nicknamesArray.push(el.playerName);
+                    });
+                }
+                if (nicknamesArray.includes(playerName)) {
+                    playerName = getPlayerName('this nickname already exist, try to create some unique');
+                }
+                localStorage.setItem("playerName", playerName);
+            }
+
+            addData(currentMode, playerID, playerName, seconds).then(res => {
+                if (res.success) {
+                    console.log("Тестовий запис успішно додано через setTimeout.");
+                    // handleGetScores(); // Оновлюємо рекорди, щоб побачити тестовий запис
+                } else {
+                    console.error("Помилка додавання тестового запису: ", res.error);
+                }
+            });
         }
     }
 }
@@ -460,4 +513,37 @@ window.addEventListener('resize', function() {
         }
     }
   }, 400); 
+});
+
+
+document.addEventListener('keydown', (event) => {
+    const isCtrlPressed = event.ctrlKey || event.metaKey;
+
+    const isShiftPressed = event.shiftKey;
+
+    const isAPressed = event.key === 'a' || event.key === 'A' || event.key === 'ф' || event.key === 'Ф';
+
+    if (isCtrlPressed && isShiftPressed && isAPressed) {
+        event.preventDefault();
+
+        bombsArray.forEach((el) => {
+            document.getElementById(el).style.background = 'yellow'
+        });
+    }
+});
+
+document.addEventListener('keydown', (event) => {
+    const isCtrlPressed = event.ctrlKey || event.metaKey;
+
+    const isShiftPressed = event.shiftKey;
+
+    const isBPressed = event.key === 'b' || event.key === 'B' || event.key === 'и' || event.key === 'И';
+
+    if (isCtrlPressed && isShiftPressed && isBPressed) {
+        event.preventDefault();
+
+        bombsArray.forEach((el) => {
+            markCell(el)
+        });
+    }
 });

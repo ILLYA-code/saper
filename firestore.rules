@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Дозволити читання даних з колекції 'scores' для всіх
+    match /scores/{scoreId} {
+      allow read: if true;
+
+      // Дозволити створення нового документа у колекції 'scores'
+      // з перевіркою, що поля існують і мають коректний тип
+      allow create: if request.resource.data.playerName is string &&
+                       request.resource.data.playerName.size() > 0 &&
+                       request.resource.data.time is number &&
+                       request.resource.data.time > 0 &&
+                       request.resource.data.difficulty is string &&
+                       request.resource.data.difficulty.size() > 0;
+
+      // Заборонити оновлення та видалення існуючих документів у колекції 'scores'
+      allow update, delete: if false;
+    }
+
+    // Заборонити доступ до будь-яких інших колекцій чи документів
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
