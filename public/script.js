@@ -678,7 +678,6 @@ if (isBoardPressed === 'yes' && bombsArray.length > 0) {
 
 
 function listenForCheatCodes(callbackMap) {
-  // Визначаємо чіт-коди як послідовність фізичних клавіш
   const cheatCodes = {
     'FILL3': ['KeyF', 'KeyI', 'KeyL', 'KeyL', 'Digit3'],
     'MARK3': ['KeyM', 'KeyA', 'KeyR', 'KeyK', 'Digit3']
@@ -697,7 +696,7 @@ function listenForCheatCodes(callbackMap) {
     for (const [name, codeSeq] of Object.entries(cheatCodes)) {
       if (arraysMatch(inputBuffer.slice(-codeSeq.length), codeSeq)) {
         inputBuffer = [];
-        callbackMap[name]?.(); // Виклик функції
+        callbackMap[name]?.(); 
       }
     }
   });
