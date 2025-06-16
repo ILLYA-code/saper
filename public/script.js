@@ -101,7 +101,6 @@ const writeBombsCount = (n) => countElement.innerText = n;
 const updateBombsCount = (n) => {
     bombsCount = n;
     writeBombsCount(n);
-    console.log("writed")
     localStorage.setItem('bombsCount', bombsCount);
 }
 
@@ -326,7 +325,7 @@ const checkForVictory = () => {
 
             addData(currentMode, playerID, playerName, seconds).then(res => {
                 if (res.success) {
-                    console.log("Тестовий запис успішно додано через setTimeout.");
+                    // console.log("Тестовий запис успішно додано через setTimeout.");
                     // handleGetScores(); // Оновлюємо рекорди, щоб побачити тестовий запис
                 } else {
                     console.error("Помилка додавання тестового запису: ", res.error);
@@ -497,7 +496,7 @@ if (!lastComplexity) {
 const updateComplexity = (comp) => {
     let complexity = comp * 1;
     localStorage.setItem('lastComplexity', complexity);
-    console.log(complexity, amount);
+    // console.log(complexity, amount);
     
     if (amount === 10) {
         if (complexity === 1) {
