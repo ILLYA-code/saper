@@ -621,7 +621,7 @@ let touchTimer2;
 
 if (isBoardPressed === 'yes') {
     mobileTimerElement.addEventListener('touchstart', () => {
-        if (bombsArray.length > 0) {
+        // if (bombsArray.length > 0) {
             touchTimer1 = setTimeout(() => {
                 if (!isCheat1Active) {
                     isCheat1Active = true;
@@ -637,19 +637,19 @@ if (isBoardPressed === 'yes') {
                 }
 
             }, 2000);
-        }
+        // }
     });
 
     mobileTimerElement.addEventListener('touchend', () => {
-        if (bombsArray.length > 0) {
+        // if (bombsArray.length > 0) {
             clearTimeout(touchTimer1);
-        }
+        // }
     });
 
     mobileTimerElement.addEventListener('touchmove', () => {
-        if (bombsArray.length > 0) {
+        // if (bombsArray.length > 0) {
             clearTimeout(touchTimer1);
-        }
+        // }
     });
 
 
