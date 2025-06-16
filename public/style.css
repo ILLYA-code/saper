@@ -283,3 +283,141 @@ option, select {
 #board-btn:hover {
     background: #f1ffbc;
 }
+
+
+/* MOBILE ================================*/
+
+.mobile-timer, .mobile-best-timer {
+    position: fixed;
+    background: white;
+    border-bottom: 1px solid black;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    letter-spacing: 0px;
+    box-shadow: 0px 1px 1px 1px rgba(0, 0, 0, 0.384);
+    font-size: 18px;
+    display: none;
+}
+
+.mobile-timer {
+    left: 0px;
+    border-bottom-right-radius: 15px;
+    border-right: 1px solid black;
+    padding-right: 10px;
+}
+
+.mobile-best-timer {
+    right: 0px;
+    border-bottom-left-radius: 15px;
+    border-left: 1px solid black;
+    padding: 0px 10px 0px 14px;
+}
+
+@media screen and (max-width: 768px) {
+    .mobile-timer, .mobile-best-timer {
+        display: flex;
+    }
+    
+    header {
+        background: #c4ffc7;
+        padding: 20px;
+        box-shadow: 0px 1px 5px rgba(94, 94, 94, 0.164);
+        display: flex;
+        justify-content: center;
+    }
+
+    .header-cutter {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    #a1 {
+        display: none;
+    }
+    #a2 {
+        display: none;
+    }
+
+    .game-section {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        padding-top: 50px;
+    }
+
+    header {
+        padding: 10px;
+    }
+    
+    .header-cutter {
+        gap: 4px;
+    }
+
+    #board-btn {
+        font-size: 1.5rem;
+    }
+
+    option, select {
+        font-size: 22px;
+    }
+}
+
+.choice {
+    position: fixed;
+    /* left: 100px; */
+    /* top: 300px; */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: hidden;
+    /* border-radius: 6px; */
+}
+
+.choice .open {
+    background: #eee9e9;
+    padding: 6px;
+}
+
+.choice .mark {
+    background: #eee9e9;
+    padding: 6px;
+}
+
+.open, .mark {
+    border-radius: 50%;
+}
+
+.shovel-box {
+    width: 100%;
+    padding: 4px 0px;
+    /* height: 25px; */
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.shovel-top {
+    width: 60%;
+    height: 4px;
+    background: #290a00;
+    border-radius: 2px;
+}
+
+.shovel-middle {
+    width: 4px;
+    height: 6px;
+    background: #290a00;
+}
+
+.shovel-bottom {
+    width: 60%;
+    height: 14px;
+    background: #686868;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}

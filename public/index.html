@@ -4,9 +4,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Saper Game - With ScoreBoard</title>
-        <!-- <script src="/__/firebase/11.9.1/firebase-app-compat.js"></script> -->
-        <!-- <script src="/__/firebase/11.9.1/firebase-firestore-compat.js"></script> -->
-        <!-- <script src="/__/firebase/init.js?useEmulator=false"></script> -->
         <link rel="stylesheet" href="./style.css">
     </head>
     <body>
@@ -22,7 +19,7 @@
                   <option value="2" selected>normal</option>
                   <option value="3">hard</option>
                 </select>
-                <div class="best-box">
+                <div class="best-box" id="a1">
                     <div class="cup-box">
                         <div class="red-circle">
                             <div class="white-circle">
@@ -36,7 +33,7 @@
                     </div>
                 </div>
 
-                <div class="best-box">
+                <div class="best-box" id="a2">
                     <div class="cup-box">
                         <div class="cup-top"></div>
                         <div class="cup-middle"></div>
@@ -57,6 +54,29 @@
                 <a href="./board.html" id="board-btn">board</a>
             </div>
         </header>
+
+        <!-- <div class="mobile-timer" id="mobile-timer">00:01</div> -->
+        <div class="mobile-timer" id="mobile-timer" style="flex-direction: row; align-items: center;">
+            <div class="cup-box" style="transform: scale(0.5);">
+                <div class="red-circle">
+                    <div class="white-circle">
+                        <div class="bigger-stroke"></div>
+                        <div class="smaller-stroke"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="mobile-timer-text">00:00</div>
+        </div>
+        <!-- <div class="mobile-best-timer" id="mobile-best-timer">00:00</div> -->
+        <div class="mobile-best-timer" id="mobile-best-timer" style="flex-direction: row; gap: 10px; align-items: center;">
+            <div class="cup-box" style="width: 9px; height: 52px; transform: scale(0.6);" id="mobile-cup">
+                <div class="cup-top"></div>
+                <div class="cup-middle"></div>
+                <div class="cup-bottom"></div>
+            </div>
+            <div id="mobile-best-timer-text">--:--</div>
+        </div>
+        
         <div class="game-section">
             <div class="field" id="field"></div>
         </div>
@@ -69,6 +89,24 @@
             <h2>VICTORY</br>🥳🥳🥳</h2>
             <button id="victory-play-button" class="retry-button">play</button>
         </div>
+
+        <!-- <div class="choice">
+            <div class="open" id="open-button">
+                <div class="shovel-box">
+                    <div class="shovel-top"></div>
+                    <div class="shovel-middle"></div>
+                    <div class="shovel-bottom"></div>
+                </div>
+            </div>
+            <div class="mark" id="mark-button">
+                <div class="flag-box" style="transform: scale(0.9);">
+                        <div class="flag">
+                        <div class="red"></div><div></div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        
         <!-- <script type="module"></script> -->
         <script type="module" src="./firebase-config.js"></script>
         <script type="module" src="./script.js"></script>

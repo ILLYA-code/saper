@@ -10,6 +10,18 @@ let retryButton = document.getElementById('retry-button');
 let victoryPlayButton = document.getElementById('victory-play-button');
 let gameOverBoxElement = document.getElementById('game-over-box');
 let gameVictoryElement = document.getElementById('victory-box');
+let boardBtn = document.getElementById('board-btn');
+let mobileBestTimerElement = document.getElementById('mobile-best-timer');
+let mobileTimerElement = document.getElementById('mobile-timer');
+let mobileTimerTextElement = document.getElementById('mobile-timer-text');
+let mobileBestTimerTextElement = document.getElementById('mobile-best-timer-text');
+
+let isMobile = false;
+const setIsMobile = (n) => isMobile = n;
+
+setTimeout(() => {
+    mobileBestTimerElement.style.height = mobileTimerElement.offsetHeight + 'px';
+}, 100);
 
 let timerInterval;
 let seconds = 0;
@@ -36,6 +48,7 @@ if (!playerID) {
 
 let currentMode = 'normal10';
 const updateCurrentMode = (n) => currentMode = n;
+
 let localStorageKeys = ['easy10', 'easy17', 'easy24', 'normal10', 'normal17', 'normal24', 'hard10', 'hard17', 'hard24']
 let localStorageKeysValuesMap = new Map();
 
@@ -61,25 +74,38 @@ localStorageKeys.forEach((el) => {
         localStorageKeysValuesMap.set(el, localStorage.getItem(el));
         if (currentMode === el) {
             bestTimerElement.innerText = getTimeBySeconds(localStorage.getItem(el) * 1);
+            mobileBestTimerTextElement.innerText = getTimeBySeconds(localStorage.getItem(el) * 1);
         }
     } else {
         localStorageKeysValuesMap.set(el, 'none');
     }
 })
 
-let amount = 10;
-
+let amount = localStorage.getItem('amount');
 const updateAmount = (n) => {
     amount = n;
+    localStorage.setItem('amount', n);
 }
+if (!amount) {
+    updateAmount(10);
+}
+// let amount = 10;
 
-let bombsCount = 15;
+
+let bombsCount = localStorage.getItem('bombsCount');
+// let bombsCount = 15;
+const writeBombsCount = (n) => countElement.innerText = n;
+
 const updateBombsCount = (n) => {
     bombsCount = n;
     writeBombsCount(n);
+    localStorage.setItem('bombsCount', bombsCount);
 }
 
-const writeBombsCount = (n) => countElement.innerText = n;
+if (!bombsCount) {
+    updateBombsCount(15);
+}
+
 
 let cellSize = 50;
 
@@ -103,14 +129,20 @@ const writeBestTimer = () => {
     if (localStorage.getItem(currentMode)) {
         let currentBest = localStorage.getItem(currentMode);
         if (currentBest === 'none') {
-            bestTimerElement.innerText = '--:--'
+            bestTimerElement.innerText = '--:--';
+            mobileBestTimerTextElement.innerText = '--:--';
         } else if (currentBest * 1 > 0) {
             bestTimerElement.innerText = getTimeBySeconds(currentBest);
+            mobileBestTimerTextElement.innerText = getTimeBySeconds(currentBest);
         }
     } else {
-        bestTimerElement.innerText = '--:--'
+        bestTimerElement.innerText = '--:--';
+        mobileBestTimerTextElement.innerText = '--:--';
     }
 }
+
+let isChoiceActive = false;
+let lastChoiceId = '';
 
 const reDrawField = (amount) => {
     cellsOpened = 0;
@@ -123,6 +155,7 @@ const reDrawField = (amount) => {
     isGameOver = false;
     sizeMenuElement.disabled = false;
     complexityMenyElement.disabled = false;
+    boardBtn.href = './board.html'
     seconds = 0;
     minutes = 0;
     writeBestTimer();
@@ -156,16 +189,30 @@ const reDrawField = (amount) => {
                 y: i
             });
 
-            newCell.addEventListener('mousedown', (event) => {
-                if (event.button === 0) {
-                    openCell(cellId);
-                } else if (event.button === 2) {
+            let pressTimer;
+            const LONG_PRESS_THRESHOLD = 400;
+
+            newCell.addEventListener('touchstart', e => {
+                e.preventDefault();
+                pressTimer = setTimeout(() => {
                     markCell(cellId);
-                }
+                    pressTimer = null;
+                }, LONG_PRESS_THRESHOLD);
             });
 
-            newCell.addEventListener('contextmenu', (event) => {
-                event.preventDefault();
+            newCell.addEventListener('touchend', () => {
+                if (pressTimer) {
+                    clearTimeout(pressTimer);
+                    openCell(cellId);
+                }
+                pressTimer = null;
+            });
+
+            myButton.addEventListener('touchcancel', () => {
+                if (pressTimer) {
+                    clearTimeout(pressTimer);
+                }
+                pressTimer = null;
             });
 
             newRow.appendChild(newCell);
@@ -270,6 +317,11 @@ const checkForVictory = () => {
 }
 
 const openCell = (id) => {
+    // if (isChoiceActive) {
+    //     document.getElementById(`${id}choice`).style.display = 'none';
+    //     return;
+    // }
+    
     if (isGameOver || isVictory) {
         return;
     }
@@ -305,12 +357,14 @@ const openCell = (id) => {
             if (isFirstOpening) {
                 sizeMenuElement.disabled = true;
                 complexityMenyElement.disabled = true;
+                boardBtn.href = 'javascript:void(0);';
                 bombsArray = [];
                 generateBombs(bombsCount, [...cellsAroundArray, id]);
                 isFirstOpening = false;
                 timerInterval = setInterval(() => {
                     seconds++; 
                     timerElement.innerText = getTimeBySeconds(seconds);
+                    mobileTimerTextElement.innerText = getTimeBySeconds(seconds);
                 }, 1000);
             }
 
@@ -476,6 +530,7 @@ complexityMenyElement.addEventListener('change', (ev) => {
 const restartGame = () => {
     reDrawField(amount);
     timerElement.innerText = '00:00';
+    mobileTimerTextElement.innerText = '00:00';
     writeBombsCount(bombsCount);
     markedCells.forEach((el) => {
         document.getElementById(el).innerHTML = '';

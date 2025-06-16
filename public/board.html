@@ -14,6 +14,19 @@
             <a class="back-btn" href="./index.html">⇐ game</a>
             <div class="title">Leader Board</div>
 
+            <!-- <select id="size-menu" name="menu">
+                <option value="10">10 X 10</option>
+                <option value="17">17 X 17</option>
+                <option value="24">24 X 24</option>
+            </select>
+            <select id="complexity-menu" name="complexity-menu">
+                <option value="easy">easy</option>
+                <option value="normal" selected>normal</option>
+                <option value="hard">hard</option> -->
+            </select>
+        </div>
+
+        <div class="header-cutter">
             <select id="size-menu" name="menu">
                 <option value="10">10 X 10</option>
                 <option value="17">17 X 17</option>
@@ -26,13 +39,15 @@
             </select>
         </div>
     </header>
-    <div class="board-box">
-        <div class="no-scores-box" id="no-scores-box">
-            <div class="no-scores">THERE ARE NO SCORES FOR THIS MODE</div>
-            <div class="no-scores">BECOME THE FIRST ONE!</div>
-        </div>
-        <div class="scores-table" id="scores-table">
+    <div class="all-box">
+        <div class="board-box">
+            <div class="no-scores-box" id="no-scores-box">
+                <div class="no-scores">THERE ARE NO SCORES FOR THIS MODE</div>
+                <div class="no-scores">BECOME THE FIRST ONE!</div>
+            </div>
+            <div class="scores-table" id="scores-table">
             
+            </div>
         </div>
     </div>
 
@@ -57,7 +72,7 @@
         let currentSize = 10;
         let currentMode = 'normal';
 
-        let currentModeFirstPart = 'easy';
+        let currentModeFirstPart = 'normal';
         let currentModeSecondPart = '10';
         let currentModeFullName = currentModeFirstPart + currentModeSecondPart;
 
@@ -142,6 +157,8 @@
                 noScoresBox.style.display = 'block';
             }
         }
+
+        resortList(10, 'normal')
 
         sizeMenuElement.addEventListener('change', (ev) => {
             let val = ev.target.value * 1;
