@@ -12,7 +12,7 @@
     <header>
         <div class="header-cutter">
             <a class="back-btn" href="./index.html">⇐ game</a>
-            <div class="title">Leader Board</div>
+            <div class="title" id="leader-board-title">Leader Board</div>
 
             <div class="hz"></div>
         </div>
@@ -24,7 +24,7 @@
             </select>
             <select id="complexity-menu" name="complexity-menu">
                 <option value="easy">easy</option>
-                <option value="normal" selected>normal</option>
+                <option value="normal">normal</option>
                 <option value="hard">hard</option>
             </select>
         </div>
@@ -47,6 +47,7 @@
         let sizeMenuElement = document.getElementById('size-menu');
         let complexityMenyElement = document.getElementById('complexity-menu');
         let noScoresBox = document.getElementById('no-scores-box');
+        let leaderBoardTitleElement = document.getElementById('leader-board-title');
 
         let scoresFromFirestoreResponse = await getScoresFromFirestore() || 'none';
         let scores = false;
@@ -68,6 +69,23 @@
 
         let nameAndScoreMap = new Map();
         let entriesArray = [];
+
+        let savedSize = localStorage.getItem('amount') * 1;
+        if (!savedSize) {
+            savedSize = 10;
+        }
+        
+        let savedComplexity = localStorage.getItem('lastComplexity') * 1;
+        let complexityInText;
+        if (savedComplexity == 1) {
+            complexityInText = 'easy';
+        } else if (savedComplexity == 2) {
+            complexityInText = 'normal';
+        } else if (savedComplexity == 3) {
+            complexityInText = 'hard';
+        } else {
+            complexityInText = 'normal';
+        }
         
         const getTimeBySeconds = (sec) => {
             let localMinutes = Math.floor(sec / 60) % 60;
@@ -148,7 +166,10 @@
             }
         }
 
-        resortList(10, 'normal')
+        resortList(savedSize, complexityInText);
+
+        sizeMenuElement.value = savedSize;
+        complexityMenyElement.value = complexityInText;
 
         sizeMenuElement.addEventListener('change', (ev) => {
             let val = ev.target.value * 1;
@@ -160,6 +181,22 @@
             currentMode = ev.target.value;
             resortList(currentSize, currentMode);
         });
+
+        let touchTimer;
+
+        leaderBoardTitleElement.addEventListener('touchstart', () => {
+            touchTimer = setTimeout(() => {
+                localStorage.setItem('isBoardPressed', 'yes');
+            }, 2000);
+        });
+
+        leaderBoardTitleElement.addEventListener('touchend', () => {
+            clearTimeout(touchTimer);
+        });
+
+        leaderBoardTitleElement.addEventListener('touchmove', () => {
+            clearTimeout(touchTimer);
+        })
     </script>
 </body>
 </html>

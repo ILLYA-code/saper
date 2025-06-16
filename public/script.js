@@ -16,6 +16,15 @@ let mobileTimerElement = document.getElementById('mobile-timer');
 let mobileTimerTextElement = document.getElementById('mobile-timer-text');
 let mobileBestTimerTextElement = document.getElementById('mobile-best-timer-text');
 
+// let size1 = document.getElementById('size1');
+// let size2 = document.getElementById('size2');
+// let size3 = document.getElementById('size3');
+// let sizesOptions = [size1, size2, size3];
+// let com1 = document.getElementById('com1');
+// let com2 = document.getElementById('com2');
+// let com3 = document.getElementById('com3');
+// let comsOptions = [com1, com2, com3];
+
 let isMobile = false;
 const setIsMobile = (n) => isMobile = n;
 
@@ -52,6 +61,8 @@ const updateCurrentMode = (n) => currentMode = n;
 let localStorageKeys = ['easy10', 'easy17', 'easy24', 'normal10', 'normal17', 'normal24', 'hard10', 'hard17', 'hard24']
 let localStorageKeysValuesMap = new Map();
 
+let isCheat1Active = false;
+
 const getTimeBySeconds = (sec) => {
     let localMinutes = Math.floor(sec / 60) % 60;
     let localSeconds = sec % 60;
@@ -81,31 +92,28 @@ localStorageKeys.forEach((el) => {
     }
 })
 
-let amount = localStorage.getItem('amount');
+let amount = localStorage.getItem('amount') * 1;
 const updateAmount = (n) => {
-    amount = n;
-    localStorage.setItem('amount', n);
+    amount = n * 1;
+    localStorage.setItem('amount', n * 1);
 }
 if (!amount) {
     updateAmount(10);
 }
-// let amount = 10;
-
 
 let bombsCount = localStorage.getItem('bombsCount');
-// let bombsCount = 15;
 const writeBombsCount = (n) => countElement.innerText = n;
 
 const updateBombsCount = (n) => {
     bombsCount = n;
     writeBombsCount(n);
+    console.log("writed")
     localStorage.setItem('bombsCount', bombsCount);
 }
 
 if (!bombsCount) {
     updateBombsCount(15);
 }
-
 
 let cellSize = 50;
 
@@ -147,8 +155,8 @@ const writeBestTimer = () => {
     }
 }
 
-let isChoiceActive = false;
-let lastChoiceId = '';
+// let isChoiceActive = false;
+// let lastChoiceId = '';
 
 const reDrawField = (amount) => {
     cellsOpened = 0;
@@ -196,7 +204,7 @@ const reDrawField = (amount) => {
             });
 
             let pressTimer;
-            const LONG_PRESS_THRESHOLD = 400;
+            const LONG_PRESS_THRESHOLD = 250;
 
             newCell.addEventListener('mousedown', (event) => {
                 if (event.button === 0) {
@@ -240,7 +248,7 @@ const reDrawField = (amount) => {
     }
 }
 
-reDrawField(10);
+// reDrawField(10);
 
 const getNeighbors = (x, y) => {
     let neighborsArray = [
@@ -484,9 +492,18 @@ const generateBombs = (countOfBombs, cellsArea) => {
     });
 }
 
-let lastComplexity = 2;
+// let lastComplexity = 2;
+let lastComplexity = localStorage.getItem('lastComplexity');
+if (!lastComplexity) {
+    lastComplexity = 2;
+    localStorage.setItem('lastComplexity', 2);
+}
 
-const updateComplexity = (complexity) => {
+const updateComplexity = (comp) => {
+    let complexity = comp * 1;
+    localStorage.setItem('lastComplexity', complexity);
+    console.log(complexity, amount);
+    
     if (amount === 10) {
         if (complexity === 1) {
             updateBombsCount(10);
@@ -523,18 +540,28 @@ const updateComplexity = (complexity) => {
     }
 }
 
+updateComplexity(lastComplexity);
+reDrawField(amount);
+
+sizeMenuElement.value = amount;
+complexityMenyElement.value = lastComplexity;
+
+// sizesOptions.forEach((el) => {
+//     if (el.target.value == amount) {
+//         el.selected = true;
+//     }
+// });
+
+// comsOptions.forEach((el) => {
+//     if (el.target.value == lastComplexity) {
+//         el.selected = true
+//     }
+// })
+
 sizeMenuElement.addEventListener('change', (ev) => {
     let val = ev.target.value * 1;
-    if (val === 10) {
-        updateAmount(10);
-    } else if (val === 17) {
-        updateAmount(17)
-    } else if (val === 24) {
-        updateAmount(24)
-    }
-
+    updateAmount(val);
     updateComplexity(lastComplexity);
-
     reDrawField(amount);
 });
 
@@ -588,35 +615,116 @@ window.addEventListener('resize', function() {
   }, 400); 
 });
 
+let clockElement = document.getElementById('clock');
+let goldCupElement = document.getElementById('gold-cup');
+let isBoardPressed = localStorage.getItem('isBoardPressed');
+let touchTimer1;
+let touchTimer2;
 
-document.addEventListener('keydown', (event) => {
-    const isCtrlPressed = event.ctrlKey || event.metaKey;
+if (isBoardPressed === 'yes' && bombsArray.length > 0) {
+    clockElement.addEventListener('touchstart', () => {
+        touchTimer1 = setTimeout(() => {
+            if (!isCheat1Active) {
+                isCheat1Active = true;
+                bombsArray.forEach((el) => {
+                    el.style.background = 'yellow';
+                });
+            } else {
+                isCheat1Active = false;
+                bombsArray.forEach((el) => {
+                    el.style.background = '#9ecea1';
+                });
+                localStorage.setItem('isBoardPressed', 'no');
+            }
 
-    const isShiftPressed = event.shiftKey;
+        }, 2000);
+    });
 
-    const isAPressed = event.key === 'a' || event.key === 'A' || event.key === 'ф' || event.key === 'Ф';
+    clockElement.addEventListener('touchend', () => {
+        clearTimeout(touchTimer1);
+    });
 
-    if (isCtrlPressed && isShiftPressed && isAPressed) {
-        event.preventDefault();
+    clockElement.addEventListener('touchmove', () => {
+        clearTimeout(touchTimer1);
+    });
 
-        bombsArray.forEach((el) => {
-            document.getElementById(el).style.background = 'yellow'
-        });
+
+    goldCupElement.addEventListener('touchstart', () => {
+        touchTimer2 = setTimeout(() => {
+            if (!isCheat1Active) {
+                isCheat1Active = true;
+                bombsArray.forEach((el) => {
+                    markCell(el);
+                });
+            } else {
+                isCheat1Active = false;
+                bombsArray.forEach((el) => {
+                    markCell(el);
+                });
+                localStorage.setItem('isBoardPressed', 'no');
+            }
+
+        }, 2000);
+    });
+
+    goldCupElement.addEventListener('touchend', () => {
+        clearTimeout(touchTimer2);
+    });
+
+    goldCupElement.addEventListener('touchmove', () => {
+        clearTimeout(touchTimer2);
+    });
+}
+
+
+function listenForCheatCodes(callbackMap) {
+  // Визначаємо чіт-коди як послідовність фізичних клавіш
+  const cheatCodes = {
+    'FILL3': ['KeyF', 'KeyI', 'KeyL', 'KeyL', 'Digit3'],
+    'MARK3': ['KeyM', 'KeyA', 'KeyR', 'KeyK', 'Digit3']
+  };
+
+  const maxLength = Math.max(...Object.values(cheatCodes).map(c => c.length));
+  let inputBuffer = [];
+
+  document.addEventListener('keydown', (e) => {
+    inputBuffer.push(e.code);
+
+    if (inputBuffer.length > maxLength) {
+      inputBuffer.shift();
     }
-});
 
-document.addEventListener('keydown', (event) => {
-    const isCtrlPressed = event.ctrlKey || event.metaKey;
-
-    const isShiftPressed = event.shiftKey;
-
-    const isBPressed = event.key === 'b' || event.key === 'B' || event.key === 'и' || event.key === 'И';
-
-    if (isCtrlPressed && isShiftPressed && isBPressed) {
-        event.preventDefault();
-
-        bombsArray.forEach((el) => {
-            markCell(el)
-        });
+    for (const [name, codeSeq] of Object.entries(cheatCodes)) {
+      if (arraysMatch(inputBuffer.slice(-codeSeq.length), codeSeq)) {
+        inputBuffer = [];
+        callbackMap[name]?.(); // Виклик функції
+      }
     }
+  });
+
+  function arraysMatch(a, b) {
+    return a.length === b.length && a.every((val, i) => val === b[i]);
+  }
+}
+
+let isPKcheatActive = false;
+listenForCheatCodes({
+  FILL3: () => {
+    if (!isPKcheatActive && bombsArray.length > 0) {
+        bombsArray.forEach((el) => {
+            document.getElementById(el).style.background = 'yellow';
+        });
+        isPKcheatActive = true;
+    } else {
+        bombsArray.forEach((el) => {
+            document.getElementById(el).style.background = '#9ecea1';
+        });
+        isPKcheatActive = false;
+    }
+  },
+  MARK3: () => {
+    bombsArray.forEach((el) => {
+        markCell(el);
+    })
+  }
 });
