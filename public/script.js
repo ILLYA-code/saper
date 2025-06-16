@@ -16,14 +16,7 @@ let mobileTimerElement = document.getElementById('mobile-timer');
 let mobileTimerTextElement = document.getElementById('mobile-timer-text');
 let mobileBestTimerTextElement = document.getElementById('mobile-best-timer-text');
 
-// let size1 = document.getElementById('size1');
-// let size2 = document.getElementById('size2');
-// let size3 = document.getElementById('size3');
-// let sizesOptions = [size1, size2, size3];
-// let com1 = document.getElementById('com1');
-// let com2 = document.getElementById('com2');
-// let com3 = document.getElementById('com3');
-// let comsOptions = [com1, com2, com3];
+let isFlagPressed = false;
 
 let isMobile = false;
 const setIsMobile = (n) => isMobile = n;
@@ -62,6 +55,7 @@ let localStorageKeys = ['easy10', 'easy17', 'easy24', 'normal10', 'normal17', 'n
 let localStorageKeysValuesMap = new Map();
 
 let isCheat1Active = false;
+let isCheat2Active = false;
 
 const getTimeBySeconds = (sec) => {
     let localMinutes = Math.floor(sec / 60) % 60;
@@ -381,6 +375,7 @@ const openCell = (id) => {
             }
         } else {
             if (isFirstOpening) {
+                isFlagPressed = false;
                 sizeMenuElement.disabled = true;
                 complexityMenyElement.disabled = true;
                 boardBtn.href = 'javascript:void(0);';
@@ -615,67 +610,88 @@ window.addEventListener('resize', function() {
   }, 400); 
 });
 
-// let ;
+let flagsEntire = document.getElementById('flags-entire');
+let flagTimeout;
+
+flagsEntire.addEventListener('touchstart', () => {
+    flagTimeout = setTimeout(() => {
+        isFlagPressed = true;
+    }, 1000);
+});
+
+flagsEntire.addEventListener('touchend', () => {
+    clearTimeout(flagTimeout);
+});
+
+flagsEntire.addEventListener('touchmove', () => {
+    clearTimeout(flagTimeout);
+});
+
 let touchTimer1;
 let touchTimer2;
 
-
 mobileTimerElement.addEventListener('touchstart', () => {
-    alert(bombsArray.length)
-    // if (bombsArray.length > 0) {
+    if (bombsArray.length > 0 && isFlagPressed) {
         touchTimer1 = setTimeout(() => {
             if (!isCheat1Active) {
                 isCheat1Active = true;
                 bombsArray.forEach((el) => {
-                    el.style.background = 'yellow';
+                    document.getElementById(el).style.background = 'yellow';
                 });
             } else {
                 isCheat1Active = false;
                 bombsArray.forEach((el) => {
-                    el.style.background = '#9ecea1';
+                    document.getElementById(el).style.background = '#9ecea1';
                 });
-                localStorage.setItem('isBoardPressed', 'no');
             }
-        }, 2000);
-    // }
+        }, 1000);
+    }
 });
 
 mobileTimerElement.addEventListener('touchend', () => {
-    // if (bombsArray.length > 0) {
+    if (bombsArray.length > 0) {
         clearTimeout(touchTimer1);
-    // }
+    }
 });
 
 mobileTimerElement.addEventListener('touchmove', () => {
-    // if (bombsArray.length > 0) {
+    if (bombsArray.length > 0) {
         clearTimeout(touchTimer1);
-    // }
+    }
 });
 
 
 mobileBestTimerElement.addEventListener('touchstart', () => {
-    touchTimer2 = setTimeout(() => {
-        if (!isCheat1Active) {
-            isCheat1Active = true;
+    if (bombsArray.length > 0 && isFlagPressed) {    
+        touchTimer2 = setTimeout(() => {
             bombsArray.forEach((el) => {
                 markCell(el);
-            });
-        } else {
-            isCheat1Active = false;
-            bombsArray.forEach((el) => {
-                markCell(el);
-            });
-            localStorage.setItem('isBoardPressed', 'no');
-        }
-    }, 2000);
+            })
+            // if (!isCheat2Active) {
+            //     isCheat2Active = true;
+            //     bombsArray.forEach((el) => {
+            //         markCell(el);
+            //     });
+            // } else {
+            //     isCheat2Active = false;
+            //     bombsArray.forEach((el) => {
+            //         markCell(el);
+            //     });
+            // }
+        }, 1000);
+    }
 });
 
 mobileBestTimerElement.addEventListener('touchend', () => {
-    clearTimeout(touchTimer2);
+    if (bombsArray.length > 0) {
+        clearTimeout(touchTimer2);
+    }
 });
 
 mobileBestTimerElement.addEventListener('touchmove', () => {
-    clearTimeout(touchTimer2);
+    if (bombsArray.length > 0) {
+        clearTimeout(touchTimer2);
+    }
 });
 
 
