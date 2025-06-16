@@ -622,6 +622,7 @@ let touchTimer1;
 let touchTimer2;
 
 if (isBoardPressed === 'yes' && bombsArray.length > 0) {
+    alert();
     mobileTimerElement.addEventListener('touchstart', () => {
         touchTimer1 = setTimeout(() => {
             if (!isCheat1Active) {
