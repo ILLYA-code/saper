@@ -615,70 +615,68 @@ window.addEventListener('resize', function() {
   }, 400); 
 });
 
-let isBoardPressed = localStorage.getItem('isBoardPressed');
+// let ;
 let touchTimer1;
 let touchTimer2;
 
-if (isBoardPressed === 'yes') {
-    mobileTimerElement.addEventListener('touchstart', () => {
-        // if (bombsArray.length > 0) {
-            touchTimer1 = setTimeout(() => {
-                if (!isCheat1Active) {
-                    isCheat1Active = true;
-                    bombsArray.forEach((el) => {
-                        el.style.background = 'yellow';
-                    });
-                } else {
-                    isCheat1Active = false;
-                    bombsArray.forEach((el) => {
-                        el.style.background = '#9ecea1';
-                    });
-                    localStorage.setItem('isBoardPressed', 'no');
-                }
 
-            }, 2000);
-        // }
-    });
-
-    mobileTimerElement.addEventListener('touchend', () => {
-        // if (bombsArray.length > 0) {
-            clearTimeout(touchTimer1);
-        // }
-    });
-
-    mobileTimerElement.addEventListener('touchmove', () => {
-        // if (bombsArray.length > 0) {
-            clearTimeout(touchTimer1);
-        // }
-    });
-
-
-    mobileBestTimerElement.addEventListener('touchstart', () => {
-        touchTimer2 = setTimeout(() => {
+mobileTimerElement.addEventListener('touchstart', () => {
+    alert(bombsArray.length)
+    // if (bombsArray.length > 0) {
+        touchTimer1 = setTimeout(() => {
             if (!isCheat1Active) {
                 isCheat1Active = true;
                 bombsArray.forEach((el) => {
-                    markCell(el);
+                    el.style.background = 'yellow';
                 });
             } else {
                 isCheat1Active = false;
                 bombsArray.forEach((el) => {
-                    markCell(el);
+                    el.style.background = '#9ecea1';
                 });
                 localStorage.setItem('isBoardPressed', 'no');
             }
-
         }, 2000);
-    });
+    // }
+});
 
-    mobileBestTimerElement.addEventListener('touchend', () => {
-        clearTimeout(touchTimer2);
-    });
+mobileTimerElement.addEventListener('touchend', () => {
+    // if (bombsArray.length > 0) {
+        clearTimeout(touchTimer1);
+    // }
+});
 
-    mobileBestTimerElement.addEventListener('touchmove', () => {
-        clearTimeout(touchTimer2);
-    });
-}
+mobileTimerElement.addEventListener('touchmove', () => {
+    // if (bombsArray.length > 0) {
+        clearTimeout(touchTimer1);
+    // }
+});
+
+
+mobileBestTimerElement.addEventListener('touchstart', () => {
+    touchTimer2 = setTimeout(() => {
+        if (!isCheat1Active) {
+            isCheat1Active = true;
+            bombsArray.forEach((el) => {
+                markCell(el);
+            });
+        } else {
+            isCheat1Active = false;
+            bombsArray.forEach((el) => {
+                markCell(el);
+            });
+            localStorage.setItem('isBoardPressed', 'no');
+        }
+    }, 2000);
+});
+
+mobileBestTimerElement.addEventListener('touchend', () => {
+    clearTimeout(touchTimer2);
+});
+
+mobileBestTimerElement.addEventListener('touchmove', () => {
+    clearTimeout(touchTimer2);
+});
 
 
 function listenForCheatCodes(callbackMap) {

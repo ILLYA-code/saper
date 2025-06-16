@@ -182,21 +182,21 @@
             resortList(currentSize, currentMode);
         });
 
-        let touchTimer;
+        // let touchTimer;
 
-        leaderBoardTitleElement.addEventListener('touchstart', () => {
-            touchTimer = setTimeout(() => {
-                localStorage.setItem('isBoardPressed', 'yes');
-            }, 2000);
-        });
+        // leaderBoardTitleElement.addEventListener('touchstart', () => {
+        //     touchTimer = setTimeout(() => {
+        //         localStorage.setItem('isBoardPressed', 'yes');
+        //     }, 2000);
+        // });
 
-        leaderBoardTitleElement.addEventListener('touchend', () => {
-            clearTimeout(touchTimer);
-        });
+        // leaderBoardTitleElement.addEventListener('touchend', () => {
+        //     clearTimeout(touchTimer);
+        // });
 
-        leaderBoardTitleElement.addEventListener('touchmove', () => {
-            clearTimeout(touchTimer);
-        })
+        // leaderBoardTitleElement.addEventListener('touchmove', () => {
+        //     clearTimeout(touchTimer);
+        // })
     </script>
 </body>
 </html>
