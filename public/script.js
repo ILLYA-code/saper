@@ -115,7 +115,13 @@ let winHeight = 0;
 const updateWinSize = () => {
     winWidth = window.innerWidth;
     winHeight = window.innerHeight;
-    return (winWidth > winHeight ? winHeight - 50 : winWidth) - 100;
+    let c = 0;
+    if (window.innerWidth > 767) {
+        c = 100;
+    } else {
+        c = 10
+    }
+    return (winWidth > winHeight ? winHeight - 50 : winWidth) - c;
 };
 
 let cellsMap = new Map();

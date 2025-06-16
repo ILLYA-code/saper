@@ -146,6 +146,7 @@ header {
     .place, .name, .time {
         padding: 10px;
         font-size: 16px;
+        letter-spacing: 0px;
     }
     
     .place {
