@@ -192,6 +192,18 @@ const reDrawField = (amount) => {
             let pressTimer;
             const LONG_PRESS_THRESHOLD = 400;
 
+            newCell.addEventListener('mousedown', (event) => {
+                if (event.button === 0) {
+                    openCell(cellId);
+                } else if (event.button === 2) {
+                    markCell(cellId);
+                }
+            });
+
+            newCell.addEventListener('contextmenu', (event) => {
+                event.preventDefault();
+            })
+
             newCell.addEventListener('touchstart', e => {
                 e.preventDefault();
                 pressTimer = setTimeout(() => {

@@ -79,6 +79,7 @@ h2 {
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
     font-size: 32px;
+    word-break: break-all;
 }
 
 .place {
@@ -93,6 +94,7 @@ header {
     flex-direction: column;
     gap: 10px;
     justify-content: center;
+    align-items: center;
 }
 
 .header-cutter {

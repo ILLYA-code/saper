@@ -59,7 +59,7 @@ export async function addData(mode, playerID, playerName, time) {
 
 export async function getScoresFromFirestore() {
     try {
-        const scoresQuery = query(collection(db, "scores"), orderBy("time", "asc"), limit(20));
+        const scoresQuery = query(collection(db, "scores"), orderBy("time", "asc"), limit(180));
         const querySnapshot = await getDocs(scoresQuery);
 
         const scores = [];
