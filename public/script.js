@@ -622,7 +622,7 @@ let touchTimer1;
 let touchTimer2;
 
 if (isBoardPressed === 'yes' && bombsArray.length > 0) {
-    clockElement.addEventListener('touchstart', () => {
+    mobileTimerElement.addEventListener('touchstart', () => {
         touchTimer1 = setTimeout(() => {
             if (!isCheat1Active) {
                 isCheat1Active = true;
@@ -640,16 +640,16 @@ if (isBoardPressed === 'yes' && bombsArray.length > 0) {
         }, 2000);
     });
 
-    clockElement.addEventListener('touchend', () => {
+    mobileTimerElement.addEventListener('touchend', () => {
         clearTimeout(touchTimer1);
     });
 
-    clockElement.addEventListener('touchmove', () => {
+    mobileTimerElement.addEventListener('touchmove', () => {
         clearTimeout(touchTimer1);
     });
 
 
-    goldCupElement.addEventListener('touchstart', () => {
+    mobileBestTimerElement.addEventListener('touchstart', () => {
         touchTimer2 = setTimeout(() => {
             if (!isCheat1Active) {
                 isCheat1Active = true;
@@ -667,11 +667,11 @@ if (isBoardPressed === 'yes' && bombsArray.length > 0) {
         }, 2000);
     });
 
-    goldCupElement.addEventListener('touchend', () => {
+    mobileBestTimerElement.addEventListener('touchend', () => {
         clearTimeout(touchTimer2);
     });
 
-    goldCupElement.addEventListener('touchmove', () => {
+    mobileBestTimerElement.addEventListener('touchmove', () => {
         clearTimeout(touchTimer2);
     });
 }
