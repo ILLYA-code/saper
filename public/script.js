@@ -616,7 +616,7 @@ window.addEventListener('resize', function() {
 });
 
 let clockElement = document.getElementById('clock');
-let goldCupElement = document.getElementById('gold-cup');
+let goldCupElement = document.getElementById('mobile-cup');
 let isBoardPressed = localStorage.getItem('isBoardPressed');
 let touchTimer1;
 let touchTimer2;
