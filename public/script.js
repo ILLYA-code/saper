@@ -615,38 +615,41 @@ window.addEventListener('resize', function() {
   }, 400); 
 });
 
-let clockElement = document.getElementById('clock');
-let goldCupElement = document.getElementById('mobile-cup');
 let isBoardPressed = localStorage.getItem('isBoardPressed');
 let touchTimer1;
 let touchTimer2;
 
-if (isBoardPressed === 'yes' && bombsArray.length > 0) {
-    alert();
+if (isBoardPressed === 'yes') {
     mobileTimerElement.addEventListener('touchstart', () => {
-        touchTimer1 = setTimeout(() => {
-            if (!isCheat1Active) {
-                isCheat1Active = true;
-                bombsArray.forEach((el) => {
-                    el.style.background = 'yellow';
-                });
-            } else {
-                isCheat1Active = false;
-                bombsArray.forEach((el) => {
-                    el.style.background = '#9ecea1';
-                });
-                localStorage.setItem('isBoardPressed', 'no');
-            }
+        if (bombsArray.length > 0) {
+            touchTimer1 = setTimeout(() => {
+                if (!isCheat1Active) {
+                    isCheat1Active = true;
+                    bombsArray.forEach((el) => {
+                        el.style.background = 'yellow';
+                    });
+                } else {
+                    isCheat1Active = false;
+                    bombsArray.forEach((el) => {
+                        el.style.background = '#9ecea1';
+                    });
+                    localStorage.setItem('isBoardPressed', 'no');
+                }
 
-        }, 2000);
+            }, 2000);
+        }
     });
 
     mobileTimerElement.addEventListener('touchend', () => {
-        clearTimeout(touchTimer1);
+        if (bombsArray.length > 0) {
+            clearTimeout(touchTimer1);
+        }
     });
 
     mobileTimerElement.addEventListener('touchmove', () => {
-        clearTimeout(touchTimer1);
+        if (bombsArray.length > 0) {
+            clearTimeout(touchTimer1);
+        }
     });
 
 
