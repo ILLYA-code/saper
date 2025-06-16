@@ -208,7 +208,7 @@ const reDrawField = (amount) => {
                 pressTimer = null;
             });
 
-            myButton.addEventListener('touchcancel', () => {
+            newCell.addEventListener('touchcancel', () => {
                 if (pressTimer) {
                     clearTimeout(pressTimer);
                 }
