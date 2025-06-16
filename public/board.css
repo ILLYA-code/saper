@@ -141,3 +141,14 @@ header {
     padding-top: 120px;
     color: rgba(0, 0, 0, 0.377);
 }
+
+@media (max-width: 767px) {
+    .place, .name, .time {
+        padding: 10px;
+        font-size: 16px;
+    }
+    
+    .place {
+        font-size: 26px;
+    }
+}
