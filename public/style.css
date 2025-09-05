@@ -407,7 +407,6 @@ option, select {
 .shovel-box {
     width: 100%;
     padding: 4px 0px;
-    /* height: 25px; */
     display: flex;
     align-items: center;
     flex-direction: column;
