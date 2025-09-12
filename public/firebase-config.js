@@ -27,7 +27,6 @@ export async function addData(mode, playerID, playerName, time) {
 
         for (const document of querySnapshot.docs) {
             const existingTime = document.data().time;
-
             if (existingTime > time) {
                 await deleteDoc(document.ref); 
                 console.log(`Старий рекорд з ID: ${document.id} (час: ${existingTime}) було видалено, оскільки новий час (${time}) кращий.`);
@@ -49,7 +48,7 @@ export async function addData(mode, playerID, playerName, time) {
         return { 
             success: true, 
             docId: docRef.id, 
-            message: oldDocDeleted ? "Новий рекорд додано, старий (гірший) видалено." : "Новий рекорд додано." 
+            message: oldDocDeleted ? "Новий рекорд додано, старий видалено." : "Новий рекорд додано." 
         };
     } catch (e) {
         console.error("Помилка при додаванні/видаленні документа: ", e);

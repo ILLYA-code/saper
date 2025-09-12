@@ -16,10 +16,7 @@ let mobileTimerElement = document.getElementById('mobile-timer');
 let mobileTimerTextElement = document.getElementById('mobile-timer-text');
 let mobileBestTimerTextElement = document.getElementById('mobile-best-timer-text');
 
-let isFlagPressed = false;
-
-let isMobile = false;
-const setIsMobile = (n) => isMobile = n;
+// let isFlagPressed = false;
 
 setTimeout(() => {
     mobileBestTimerElement.style.height = mobileTimerElement.offsetHeight + 'px';
@@ -28,7 +25,6 @@ setTimeout(() => {
 let timerInterval;
 let seconds = 0;
 let minutes = 0;
-
 let cellsOpened = 0;
 let isVictory = false;
 
@@ -53,9 +49,6 @@ const updateCurrentMode = (n) => currentMode = n;
 
 let localStorageKeys = ['easy10', 'easy17', 'easy24', 'normal10', 'normal17', 'normal24', 'hard10', 'hard17', 'hard24']
 let localStorageKeysValuesMap = new Map();
-
-let isCheat1Active = false;
-let isCheat2Active = false;
 
 const getTimeBySeconds = (sec) => {
     let localMinutes = Math.floor(sec / 60) % 60;
@@ -109,7 +102,6 @@ if (!bombsCount) {
 }
 
 let cellSize = 50;
-
 let winWidth = 0;
 let winHeight = 0;
 
@@ -147,9 +139,6 @@ const writeBestTimer = () => {
         mobileBestTimerTextElement.innerText = '--:--';
     }
 }
-
-// let isChoiceActive = false;
-// let lastChoiceId = '';
 
 const reDrawField = (amount) => {
     cellsOpened = 0;
@@ -233,15 +222,11 @@ const reDrawField = (amount) => {
                 }
                 pressTimer = null;
             });
-
             newRow.appendChild(newCell);
         }
-
         field.appendChild(newRow);
     }
 }
-
-// reDrawField(10);
 
 const getNeighbors = (x, y) => {
     let neighborsArray = [
@@ -254,7 +239,6 @@ const getNeighbors = (x, y) => {
         `x${x}y${y + 1}`,
         `x${x + 1}y${y + 1}`,
     ];
-
     return neighborsArray;
 }
 
@@ -302,11 +286,9 @@ const checkForVictory = () => {
 
             const getPlayerName = (text) => {
                 let newNickname = prompt(text);
-                
                 if (nicknamesArray.includes(newNickname)) {
                     getPlayerName('this nickname already exist, try to create some unique');
                 }
-
                 return newNickname;
             }
 
@@ -325,8 +307,7 @@ const checkForVictory = () => {
 
             addData(currentMode, playerID, playerName, seconds).then(res => {
                 if (res.success) {
-                    // console.log("Тестовий запис успішно додано через setTimeout.");
-                    // handleGetScores(); // Оновлюємо рекорди, щоб побачити тестовий запис
+                    console.log("Тестовий запис успішно додано через setTimeout.");
                 } else {
                     console.error("Помилка додавання тестового запису: ", res.error);
                 }
@@ -336,11 +317,6 @@ const checkForVictory = () => {
 }
 
 const openCell = (id) => {
-    // if (isChoiceActive) {
-    //     document.getElementById(`${id}choice`).style.display = 'none';
-    //     return;
-    // }
-    
     if (isGameOver || isVictory) {
         return;
     }
@@ -355,16 +331,13 @@ const openCell = (id) => {
         return;
     } else {
         let cellsAroundArray = getNeighbors(cellsMap.get(id).x, cellsMap.get(id).y);
-        
         if (cellsMap.get(id).opened) {
             let flagsAround = 0;
-            
             cellsAroundArray.forEach((el) => {
                 if (cellsMap.has(el) && cellsMap.get(el).marked) {
                     flagsAround++;
                 }
             });
-
             if (flagsAround === cellsMap.get(id).bombsAround) {
                 cellsAroundArray.forEach((el) => {
                     if (cellsMap.has(el) && !cellsMap.get(el).marked && !cellsMap.get(el).opened) {
@@ -389,7 +362,6 @@ const openCell = (id) => {
             }
 
             let bombsAroundCount = cellsMap.get(id).bombsAround;
-
             let currentColor = 'black';
 
             if (bombsAroundCount === 0) {
@@ -475,9 +447,7 @@ const generateBombs = (countOfBombs, cellsArea) => {
 
     bombsArray.forEach((el) => {
         cellsMap.set(el, { ...cellsMap.get(el), bomb: true });
-
         let neighbors = getNeighbors(cellsMap.get(el).x, cellsMap.get(el).y);
-
         neighbors.forEach((n) => {
             if (cellsMap.has(n)) {
                 cellsMap.set(n, { ...cellsMap.get(n), bombsAround: cellsMap.get(n).bombsAround + 1 })
@@ -486,52 +456,29 @@ const generateBombs = (countOfBombs, cellsArea) => {
     });
 }
 
-// let lastComplexity = 2;
 let lastComplexity = localStorage.getItem('lastComplexity');
 if (!lastComplexity) {
     lastComplexity = 2;
     localStorage.setItem('lastComplexity', 2);
 }
 
+const getComplexityName = (localAmount, localComplexityLevel) => {
+    let leftPart = localComplexityLevel === 1 ? 'easy' : (localComplexityLevel === 2 ? 'normal' : 'hard');
+    return leftPart + localAmount;
+}
+
 const updateComplexity = (comp) => {
     let complexity = comp * 1;
     localStorage.setItem('lastComplexity', complexity);
-    // console.log(complexity, amount);
     
     if (amount === 10) {
-        if (complexity === 1) {
-            updateBombsCount(10);
-            updateCurrentMode('easy10');
-        } else if (complexity === 2) {
-            updateBombsCount(15);
-            updateCurrentMode('normal10');
-        } else if (complexity === 3) {
-            updateBombsCount(20);
-            updateCurrentMode('hard10');
-        }
+        updateBombsCount(complexity === 1 ? 10 : (complexity === 2 ? 15 : 20));
     } else if (amount === 17) {
-        if (complexity === 1) {
-            updateBombsCount(30);
-            updateCurrentMode('easy17');
-        } else if (complexity === 2) {
-            updateBombsCount(60);
-            updateCurrentMode('normal17');
-        } else if (complexity === 3) {
-            updateBombsCount(80);
-            updateCurrentMode('hard17');
-        }
+        updateBombsCount(complexity === 1 ? 30 : (complexity === 2 ? 60 : 80));
     } else if (amount === 24) {
-        if (complexity === 1) {
-            updateBombsCount(99);
-            updateCurrentMode('easy24');
-        } else if (complexity === 2) {
-            updateBombsCount(130);
-            updateCurrentMode('normal24');
-        } else if (complexity === 3) {
-            updateBombsCount(160);
-            updateCurrentMode('hard24');
-        }
+        updateBombsCount(complexity === 1 ? 99 : (complexity === 2 ? 130 : 160));
     }
+    updateCurrentMode(getComplexityName(amount, complexity));
 }
 
 updateComplexity(lastComplexity);
@@ -539,18 +486,6 @@ reDrawField(amount);
 
 sizeMenuElement.value = amount;
 complexityMenyElement.value = lastComplexity;
-
-// sizesOptions.forEach((el) => {
-//     if (el.target.value == amount) {
-//         el.selected = true;
-//     }
-// });
-
-// comsOptions.forEach((el) => {
-//     if (el.target.value == lastComplexity) {
-//         el.selected = true
-//     }
-// })
 
 sizeMenuElement.addEventListener('change', (ev) => {
     let val = ev.target.value * 1;
@@ -609,138 +544,127 @@ window.addEventListener('resize', function() {
   }, 400); 
 });
 
-let flagsEntire = document.getElementById('flags-entire');
-let flagTimeout;
+// let flagsEntire = document.getElementById('flags-entire');
+// let flagTimeout;
 
-flagsEntire.addEventListener('touchstart', () => {
-    flagTimeout = setTimeout(() => {
-        isFlagPressed = true;
-    }, 1000);
-});
+// flagsEntire.addEventListener('touchstart', () => {
+//     flagTimeout = setTimeout(() => {
+//         isFlagPressed = true;
+//     }, 1000);
+// });
 
-flagsEntire.addEventListener('touchend', () => {
-    clearTimeout(flagTimeout);
-});
+// flagsEntire.addEventListener('touchend', () => {
+//     clearTimeout(flagTimeout);
+// });
 
-flagsEntire.addEventListener('touchmove', () => {
-    clearTimeout(flagTimeout);
-});
+// flagsEntire.addEventListener('touchmove', () => {
+//     clearTimeout(flagTimeout);
+// });
 
-let touchTimer1;
-let touchTimer2;
+// let touchTimer1;
+// let touchTimer2;
 
-mobileTimerElement.addEventListener('touchstart', () => {
-    if (bombsArray.length > 0 && isFlagPressed) {
-        touchTimer1 = setTimeout(() => {
-            if (!isCheat1Active) {
-                isCheat1Active = true;
-                bombsArray.forEach((el) => {
-                    document.getElementById(el).style.background = 'yellow';
-                });
-            } else {
-                isCheat1Active = false;
-                bombsArray.forEach((el) => {
-                    document.getElementById(el).style.background = '#9ecea1';
-                });
-            }
-        }, 1000);
-    }
-});
+// mobileTimerElement.addEventListener('touchstart', () => {
+//     if (bombsArray.length > 0 && isFlagPressed) {
+//         touchTimer1 = setTimeout(() => {
+//             if (!isCheat1Active) {
+//                 isCheat1Active = true;
+//                 bombsArray.forEach((el) => {
+//                     document.getElementById(el).style.background = 'yellow';
+//                 });
+//             } else {
+//                 isCheat1Active = false;
+//                 bombsArray.forEach((el) => {
+//                     document.getElementById(el).style.background = '#9ecea1';
+//                 });
+//             }
+//         }, 1000);
+//     }
+// });
 
-mobileTimerElement.addEventListener('touchend', () => {
-    if (bombsArray.length > 0) {
-        clearTimeout(touchTimer1);
-    }
-});
+// mobileTimerElement.addEventListener('touchend', () => {
+//     if (bombsArray.length > 0) {
+//         clearTimeout(touchTimer1);
+//     }
+// });
 
-mobileTimerElement.addEventListener('touchmove', () => {
-    if (bombsArray.length > 0) {
-        clearTimeout(touchTimer1);
-    }
-});
-
-
-mobileBestTimerElement.addEventListener('touchstart', () => {
-    if (bombsArray.length > 0 && isFlagPressed) {    
-        touchTimer2 = setTimeout(() => {
-            bombsArray.forEach((el) => {
-                markCell(el);
-            })
-            // if (!isCheat2Active) {
-            //     isCheat2Active = true;
-            //     bombsArray.forEach((el) => {
-            //         markCell(el);
-            //     });
-            // } else {
-            //     isCheat2Active = false;
-            //     bombsArray.forEach((el) => {
-            //         markCell(el);
-            //     });
-            // }
-        }, 1000);
-    }
-});
-
-mobileBestTimerElement.addEventListener('touchend', () => {
-    if (bombsArray.length > 0) {
-        clearTimeout(touchTimer2);
-    }
-});
-
-mobileBestTimerElement.addEventListener('touchmove', () => {
-    if (bombsArray.length > 0) {
-        clearTimeout(touchTimer2);
-    }
-});
+// mobileTimerElement.addEventListener('touchmove', () => {
+//     if (bombsArray.length > 0) {
+//         clearTimeout(touchTimer1);
+//     }
+// });
 
 
-function listenForCheatCodes(callbackMap) {
-  const cheatCodes = {
-    'FILL3': ['KeyF', 'KeyI', 'KeyL', 'KeyL', 'Digit3'],
-    'MARK3': ['KeyM', 'KeyA', 'KeyR', 'KeyK', 'Digit3']
-  };
+// mobileBestTimerElement.addEventListener('touchstart', () => {
+//     if (bombsArray.length > 0 && isFlagPressed) {    
+//         touchTimer2 = setTimeout(() => {
+//             bombsArray.forEach((el) => {
+//                 markCell(el);
+//             })
+//         }, 1000);
+//     }
+// });
 
-  const maxLength = Math.max(...Object.values(cheatCodes).map(c => c.length));
-  let inputBuffer = [];
+// mobileBestTimerElement.addEventListener('touchend', () => {
+//     if (bombsArray.length > 0) {
+//         clearTimeout(touchTimer2);
+//     }
+// });
 
-  document.addEventListener('keydown', (e) => {
-    inputBuffer.push(e.code);
+// mobileBestTimerElement.addEventListener('touchmove', () => {
+//     if (bombsArray.length > 0) {
+//         clearTimeout(touchTimer2);
+//     }
+// });
 
-    if (inputBuffer.length > maxLength) {
-      inputBuffer.shift();
-    }
 
-    for (const [name, codeSeq] of Object.entries(cheatCodes)) {
-      if (arraysMatch(inputBuffer.slice(-codeSeq.length), codeSeq)) {
-        inputBuffer = [];
-        callbackMap[name]?.(); 
-      }
-    }
-  });
+// function listenForCheatCodes(callbackMap) {
+//   const cheatCodes = {
+//     'FILL3': ['KeyF', 'KeyI', 'KeyL', 'KeyL', 'Digit3'],
+//     'MARK3': ['KeyM', 'KeyA', 'KeyR', 'KeyK', 'Digit3']
+//   };
 
-  function arraysMatch(a, b) {
-    return a.length === b.length && a.every((val, i) => val === b[i]);
-  }
-}
+//   const maxLength = Math.max(...Object.values(cheatCodes).map(c => c.length));
+//   let inputBuffer = [];
 
-let isPKcheatActive = false;
-listenForCheatCodes({
-  FILL3: () => {
-    if (!isPKcheatActive && bombsArray.length > 0) {
-        bombsArray.forEach((el) => {
-            document.getElementById(el).style.background = 'yellow';
-        });
-        isPKcheatActive = true;
-    } else {
-        bombsArray.forEach((el) => {
-            document.getElementById(el).style.background = '#9ecea1';
-        });
-        isPKcheatActive = false;
-    }
-  },
-  MARK3: () => {
-    bombsArray.forEach((el) => {
-        markCell(el);
-    })
-  }
-});
+//   document.addEventListener('keydown', (e) => {
+//     inputBuffer.push(e.code);
+
+//     if (inputBuffer.length > maxLength) {
+//       inputBuffer.shift();
+//     }
+
+//     for (const [name, codeSeq] of Object.entries(cheatCodes)) {
+//       if (arraysMatch(inputBuffer.slice(-codeSeq.length), codeSeq)) {
+//         inputBuffer = [];
+//         callbackMap[name]?.(); 
+//       }
+//     }
+//   });
+
+//   function arraysMatch(a, b) {
+//     return a.length === b.length && a.every((val, i) => val === b[i]);
+//   }
+// }
+
+// let isPKcheatActive = false;
+// listenForCheatCodes({
+//   FILL3: () => {
+//     if (!isPKcheatActive && bombsArray.length > 0) {
+//         bombsArray.forEach((el) => {
+//             document.getElementById(el).style.background = 'yellow';
+//         });
+//         isPKcheatActive = true;
+//     } else {
+//         bombsArray.forEach((el) => {
+//             document.getElementById(el).style.background = '#9ecea1';
+//         });
+//         isPKcheatActive = false;
+//     }
+//   },
+//   MARK3: () => {
+//     bombsArray.forEach((el) => {
+//         markCell(el);
+//     })
+//   }
+// });

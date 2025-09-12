@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,14 +8,14 @@
     <link rel="stylesheet" href="./board.css">
     <link rel="stylesheet" href="./style.css">
 </head>
+
 <body>
-    
     <header>
         <div class="header-cutter">
-            <a class="back-btn" href="./index.html">⇐ game</a>
+            <a class="back-btn" href="./index.html">BACK</a>
             <div class="title" id="leader-board-title">Leader Board</div>
-
-            <div class="hz"></div>
+            <div></div>
+            <div></div>
         </div>
         <div class="header-cutter">
             <select id="size-menu" name="menu">
@@ -35,9 +36,7 @@
                 <div class="no-scores">THERE ARE NO SCORES FOR THIS MODE</div>
                 <div class="no-scores">BECOME THE FIRST ONE!</div>
             </div>
-            <div class="scores-table" id="scores-table">
-            
-            </div>
+            <div class="scores-table" id="scores-table"></div>
         </div>
     </div>
 
@@ -51,7 +50,7 @@
 
         let scoresFromFirestoreResponse = await getScoresFromFirestore() || 'none';
         let scores = false;
-        
+
         if (scoresFromFirestoreResponse !== 'none' && scoresFromFirestoreResponse.success) {
             scores = scoresFromFirestoreResponse.scores;
         } else {
@@ -74,7 +73,7 @@
         if (!savedSize) {
             savedSize = 10;
         }
-        
+
         let savedComplexity = localStorage.getItem('lastComplexity') * 1;
         let complexityInText;
         if (savedComplexity == 1) {
@@ -86,7 +85,7 @@
         } else {
             complexityInText = 'normal';
         }
-        
+
         const getTimeBySeconds = (sec) => {
             let localMinutes = Math.floor(sec / 60) % 60;
             let localSeconds = sec % 60;
@@ -123,7 +122,7 @@
 
             scoresTable.innerHTML = ''
 
-            for(let i = 0; i < 20; i++) {
+            for (let i = 0; i < 20; i++) {
                 if (i >= entriesArray.length) {
                     break;
                 }
@@ -139,7 +138,7 @@
                 let timeElement = document.createElement('div');
                 timeElement.classList.add('time');
                 timeElement.innerText = getTimeBySeconds(entriesArray[i][1]);
-                
+
                 if (i === 0) {
                     placeElement.style.background = 'gold';
                     nameElement.style.background = 'gold';
@@ -153,7 +152,7 @@
                     nameElement.style.background = 'rgb(255, 186, 108)';
                     timeElement.style.background = 'rgb(255, 186, 108)';
                 }
-                
+
                 scoresTable.appendChild(placeElement);
                 scoresTable.appendChild(nameElement);
                 scoresTable.appendChild(timeElement);
@@ -199,4 +198,5 @@
         // })
     </script>
 </body>
+
 </html>

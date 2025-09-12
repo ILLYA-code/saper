@@ -4,7 +4,10 @@
     box-sizing: border-box;
     user-select: none;
 }
-
+body {
+    background: rgb(219, 238, 219);
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
 .game-section {
     width: 100%;
     display: flex;
@@ -12,17 +15,11 @@
     justify-content: center;
     padding: 20px;
 }
-
-body {
-    background: #f6ffe4;
-}
-
 .field {
     display: flex;
     flex-direction: column;
     border: 2px solid grey;
 }
-
 .cell {
     box-shadow: 0px 0px 2px grey;
     display: flex;
@@ -32,22 +29,18 @@ body {
     font-weight: bold;
     background: #9ecea1;
 }
-
 .cell:hover {
     z-index: 5;
     box-shadow: 0px 0px 4px rgb(66, 66, 66);
     cursor: pointer;
 }
-
 .row {
     display: flex;
 }
-
 img {
     max-width: 100%;
     max-height: 100%;
 }
-
 .flag {
     width: 60%;
     height: 70%;
@@ -55,27 +48,17 @@ img {
     display: grid;
     grid-template-columns: 1fr;
 }
-
 .red {
     background: red;
 }
-
 .live-bomb {
     animation: bomb 1s ease infinite;
 }
-
 @keyframes bomb {
-    0% {
-        background: black;
-    }
-    50% {
-        background: rgb(128, 0, 0);
-    }
-    100% {
-        background: black;
-    }
+    0% { background: black; }
+    50% { background: rgb(190, 0, 0); }
+    100% { background: black; }
 }
-
 header {
     background: #c4ffc7;
     padding: 20px;
@@ -83,7 +66,6 @@ header {
     display: flex;
     justify-content: center;
 }
-
 .header-cutter {
     width: 100%;
     max-width: 900px;
@@ -92,14 +74,14 @@ header {
     justify-content: space-between;
     gap: 10px;
 }
-
 option, select {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 18px;
     border-radius: 4px;
     padding: 4px;
+    border: none;
+    font-weight: bold;
 }
-
 .flags {
     padding: 10px 15px;
     border-radius: 4px;
@@ -113,7 +95,6 @@ option, select {
     font-weight: bold;
     box-shadow: inset 0px 0px 5px rgb(187, 187, 187);
 }
-
 .flag-box {
     width: 32px;
     height: 32px;
@@ -121,7 +102,6 @@ option, select {
     align-items: center;
     justify-content: center;
 }
-
 .timer {
     font-family: 'Courier New', Courier, monospace;
     font-size: 32px;
@@ -134,20 +114,17 @@ option, select {
     box-shadow: inset 0px 0px 5px rgb(187, 187, 187);
     font-weight: bold;
 }
-
 .best-box {
     display: flex;
     flex-direction: row;
     gap: 5px;
 }
-
 .cup-box {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
-
 .cup-top {
     width: 25px;
     height: 50%;
@@ -157,7 +134,6 @@ option, select {
     border: 2px solid rgb(255, 153, 0);
     z-index: 3;
 }
-
 .cup-middle {
     width: 15px;
     height: 20%;
@@ -166,7 +142,6 @@ option, select {
     margin-top: -6px;
     z-index: 2;
 }
-
 .cup-bottom {
     width: 23px;
     height: 30%;
@@ -177,7 +152,6 @@ option, select {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
 }
-
 .red-circle {
     width: 40px;
     height: 40px;
@@ -188,7 +162,6 @@ option, select {
     align-items: center;
     justify-content: center;
 }
-
 .white-circle {
     width: 32px;
     height: 32px;
@@ -199,7 +172,6 @@ option, select {
     align-items: center;
     justify-content: center;
 }
-
 .bigger-stroke {
     width: 2px;
     height: 12px;
@@ -208,7 +180,6 @@ option, select {
     position: relative;
     transform: translateY(-48%) translateX(4px);
 }
-
 .smaller-stroke {
     width: 8px;
     height: 2px;
@@ -216,7 +187,6 @@ option, select {
     border-radius: 2px;
     transform: translateX(48%);
 }
-
 .end-game-box {
     position: fixed;
     border-radius: 15px;
@@ -229,50 +199,42 @@ option, select {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-family: 'Courier New', Courier, monospace;
     font-size: 2rem;
     color: rgb(255, 115, 22);
     gap: 20px;
     font-weight: bold;
     text-shadow:
-    -1px -1px 0 black,  
-     1px -1px 0 black,
-    -1px  1px 0 black,
-     1px  1px 0 black;
+        -1px -1px 0 black,
+        1px -1px 0 black,
+        -1px 1px 0 black,
+        1px 1px 0 black;
     letter-spacing: 2px;
     z-index: 8;
-    display: none;
     box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.514);
+    display: none;
 }
-
 .game-over-h2 {
     padding: 10px 20px;
     border-radius: 15px;
     text-align: center;
 }
-
 .retry-button {
     padding: 20px 40px;
     font-size: 40px;
-    font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
     border-radius: 18px;
     cursor: pointer;
     border: 2px solid black;
 }
-
 #retry-button:hover {
     transition: 0.4s;
     box-shadow: 0px 0px 40px rgb(255, 115, 22);
 }
-
 #board-btn {
     padding: 10px 12px;
     font-size: 1.2rem;
-    font-family: 'Courier New', Courier, monospace;
     border-radius: 4px;
-    border: 1px solid black;
-    cursor: pointer;
+    border: none;
     font-weight: bold;
     background: white;
     text-decoration: none;
@@ -280,8 +242,8 @@ option, select {
     display: flex;
     align-items: center;
 }
-
-#board-btn:hover {
+#board-btn:hover,
+.back-btn:hover {
     background: #f1ffbc;
 }
 
@@ -296,130 +258,59 @@ option, select {
     font-size: 18px;
     display: none;
 }
-
 .mobile-timer {
     left: 0px;
     border-bottom-right-radius: 15px;
     padding-right: 10px;
 }
-
 .mobile-best-timer {
     right: 0px;
     border-bottom-left-radius: 15px;
     padding: 0px 10px 0px 14px;
 }
-
 @media screen and (max-width: 768px) {
     .mobile-timer, .mobile-best-timer {
         display: flex;
     }
-    
-    header {
-        background: #c4ffc7;
-        padding: 20px;
-        box-shadow: 0px 1px 5px rgba(94, 94, 94, 0.164);
-        display: flex;
-        justify-content: center;
-    }
-
     .header-cutter {
         width: 100%;
         max-width: 99vw;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        gap: 10px;
+        gap: 4px;
     }
-
     .flags {
         font-size: 18px;
     }
-
     header .flag-box {
         transform: scale(0.7);
     }
-
     #a1 {
         display: none;
     }
     #a2 {
         display: none;
     }
-
     .game-section {
         width: 100%;
-        display: flex;
         align-items: center;
         justify-content: center;
         padding: 20px;
         padding-top: 50px;
     }
-
     header {
         padding: 10px;
     }
-    
-    .header-cutter {
-        gap: 4px;
-    }
-
     #board-btn {
         font-size: 0.9rem;
         padding: 3px;
     }
-
     option, select {
         font-size: 14px;
     }
 }
-
 .choice {
     position: fixed;
     display: flex;
     flex-direction: column;
     gap: 10px;
     overflow: hidden;
-}
-
-.choice .open {
-    background: #eee9e9;
-    padding: 6px;
-}
-
-.choice .mark {
-    background: #eee9e9;
-    padding: 6px;
-}
-
-.open, .mark {
-    border-radius: 50%;
-}
-
-.shovel-box {
-    width: 100%;
-    padding: 4px 0px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-}
-
-.shovel-top {
-    width: 60%;
-    height: 4px;
-    background: #290a00;
-    border-radius: 2px;
-}
-
-.shovel-middle {
-    width: 4px;
-    height: 6px;
-    background: #290a00;
-}
-
-.shovel-bottom {
-    width: 60%;
-    height: 14px;
-    background: #686868;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
 }
