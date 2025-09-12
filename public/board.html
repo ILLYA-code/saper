@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +7,6 @@
     <link rel="stylesheet" href="./board.css">
     <link rel="stylesheet" href="./style.css">
 </head>
-
 <body>
     <header>
         <div class="header-cutter">
@@ -39,15 +37,12 @@
             <div class="scores-table" id="scores-table"></div>
         </div>
     </div>
-
     <script type="module">
         import { getScoresFromFirestore } from './firebase-config.js';
-
         let sizeMenuElement = document.getElementById('size-menu');
         let complexityMenyElement = document.getElementById('complexity-menu');
         let noScoresBox = document.getElementById('no-scores-box');
         let leaderBoardTitleElement = document.getElementById('leader-board-title');
-
         let scoresFromFirestoreResponse = await getScoresFromFirestore() || 'none';
         let scores = false;
 
@@ -58,14 +53,11 @@
         }
 
         let scoresTable = document.getElementById('scores-table');
-
         let currentSize = 10;
         let currentMode = 'normal';
-
         let currentModeFirstPart = 'normal';
         let currentModeSecondPart = '10';
         let currentModeFullName = currentModeFirstPart + currentModeSecondPart;
-
         let nameAndScoreMap = new Map();
         let entriesArray = [];
 
@@ -106,7 +98,6 @@
         const resortList = (size, mode) => {
             nameAndScoreMap.clear();
             entriesArray = [];
-
             currentModeFullName = mode + size;
 
             if (scores) {
@@ -119,7 +110,6 @@
 
             entriesArray = [...nameAndScoreMap.entries()];
             entriesArray.sort((a, b) => a[1] - b[1]);
-
             scoresTable.innerHTML = ''
 
             for (let i = 0; i < 20; i++) {
@@ -180,23 +170,6 @@
             currentMode = ev.target.value;
             resortList(currentSize, currentMode);
         });
-
-        // let touchTimer;
-
-        // leaderBoardTitleElement.addEventListener('touchstart', () => {
-        //     touchTimer = setTimeout(() => {
-        //         localStorage.setItem('isBoardPressed', 'yes');
-        //     }, 2000);
-        // });
-
-        // leaderBoardTitleElement.addEventListener('touchend', () => {
-        //     clearTimeout(touchTimer);
-        // });
-
-        // leaderBoardTitleElement.addEventListener('touchmove', () => {
-        //     clearTimeout(touchTimer);
-        // })
     </script>
 </body>
-
 </html>

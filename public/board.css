@@ -1,62 +1,26 @@
-/* * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-} */
-
-/* body {
-    background: rgb(219, 238, 219);
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-} */
-
 .board-box {
     width: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;
 }
-
 h2 {
     font-weight: bold;
     font-size: 42px;
 }
-
 .all-box {
     padding: 20px;
 }
-
 .buttons-box {
     display: flex;
     flex-direction: row;
     gap: 5px;
 }
-
-#gameSize-box,
-#mode-box {
+#gameSize-box, #mode-box {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
-
-/* .buttons-box button {
-    padding: 20px 30px;
-    font-size: 24px;
-    color: black;
-    font-weight: bold;
-    border-radius: 4px;
-    border: 2px solid grey;
-    cursor: pointer;
-    background: white;
-} */
-
-/* .buttons-box button:hover {
-    background: rgb(215, 255, 215);
-}
-
-.first-place {
-    background: rgb(255, 186, 108);
-} */
-
 .scores-table {
     margin-top: 20px;
     width: 100%;
@@ -69,10 +33,7 @@ h2 {
     border-radius: 14px;
     overflow: hidden;
 }
-
-.place,
-.name,
-.time {
+.place, .name, .time {
     background: #c4ffc7;
     padding: 24px;
     display: flex;
@@ -82,37 +43,20 @@ h2 {
     font-size: 32px;
     word-break: break-all;
 }
-
 .place {
     font-size: 42px;
 }
-
 header {
-    /* background: #c4ffc7; */
-    /* padding: 20px; */
-    /* box-shadow: 0px 1px 5px rgba(94, 94, 94, 0.164); */
-    /* display: flex; */
     flex-direction: column;
     gap: 10px;
-    /* justify-content: center; */
     align-items: center;
 }
-
 .header-cutter {
-    /* width: 100%; */
-    /* max-width: 900px; */
-    /* display: flex; */
-    /* flex-direction: row; */
     justify-content: space-around;
-
-    /* gap: 10px; */
 }
-
 .back-btn {
     border-radius: 4px;
-    /* border: 1px solid black; */
     border: none;
-    /* cursor: pointer; */
     font-weight: bold;
     background: white;
     text-decoration: none;
@@ -121,17 +65,10 @@ header {
     display: flex;
     align-items: center;
 }
-
-/* .back-btn:hover {
-    background: #f1ffbc;
-} */
-
 .title {
     font-size: 42px;
     font-weight: bold;
-    /* text-align: left; */
 }
-
 .no-scores-box {
     font-weight: bold;
     font-size: 32px;
@@ -139,17 +76,12 @@ header {
     padding-top: 120px;
     color: rgba(0, 0, 0, 0.377);
 }
-
 @media (max-width: 767px) {
-
-    .place,
-    .name,
-    .time {
+    .place, .name, .time {
         padding: 10px;
         font-size: 16px;
         letter-spacing: 0px;
     }
-
     .place {
         font-size: 26px;
     }
