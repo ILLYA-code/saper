@@ -16,6 +16,8 @@ let mobileTimerElement = document.getElementById('mobile-timer');
 let mobileTimerTextElement = document.getElementById('mobile-timer-text');
 let mobileBestTimerTextElement = document.getElementById('mobile-best-timer-text');
 
+let isFlagPressed = false;
+
 setTimeout(() => {
     mobileBestTimerElement.style.height = mobileTimerElement.offsetHeight + 'px';
 }, 100);
