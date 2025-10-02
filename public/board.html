@@ -64,6 +64,8 @@
         let savedSize = localStorage.getItem('amount') * 1;
         if (!savedSize) {
             savedSize = 10;
+        } else {
+            currentSize = savedSize;
         }
 
         let savedComplexity = localStorage.getItem('lastComplexity') * 1;
